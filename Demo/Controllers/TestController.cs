@@ -22,3 +22,5 @@ namespace Demo.Controllers
         }
     }
 }
+
+//Ceation of web api controller with two endpoints, one for authenticated users and another for users with the "Admin" role. The [Authorize] attribute is used to enforce authentication and role-based authorization.
