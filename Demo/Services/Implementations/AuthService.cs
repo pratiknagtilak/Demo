@@ -15,8 +15,10 @@ namespace Demo.Services.Implementations
             _tokenService = tokenService;
         }
 
-        public async Task<string> RegisterAsync(RegisterDto dto)
+        public async Task<object> RegisterAsync(RegisterDto dto)
         {
+            Console.WriteLine($"Incoming Email: {dto.Email}");
+           // Console.WriteLine($"Existing User Found: {existingUser != null}");
             var existingUser = await _userRepository.GetUserByEmailAsync(dto.Email);
             if (existingUser != null)
                 return "User already exists";
@@ -34,7 +36,13 @@ namespace Demo.Services.Implementations
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
 
-            return "User registered successfully";
+           
+            return new
+            {
+                success = true,
+                message = "User registered successfully"
+            };
+
         }
 
         public async Task<object> LoginAsync(LoginDto dto)
