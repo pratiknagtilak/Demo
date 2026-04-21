@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Demo.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Controllers
@@ -19,6 +20,33 @@ namespace Demo.Controllers
         public IActionResult Admin()
         {
             return Ok("Admin only");
+        }
+        [HttpGet("crash")]
+        public IActionResult Crash()
+        {
+            throw new Exception("Test server crash");
+        }
+
+        
+        [HttpGet("notfound")]
+        public IActionResult NotFoundTest()
+        {
+            throw new NotFoundException("Item not found");
+        }
+
+        
+        [HttpGet("validation")]
+        public IActionResult ValidationTest()
+        {
+            throw new ValidationException("Invalid input provided");
+        }
+
+        
+        [HttpGet("null")]
+        public IActionResult NullTest()
+        {
+            string? value = null;
+            return Ok(value.Length); 
         }
     }
 }

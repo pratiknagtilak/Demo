@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Demo.Logging;
+using Demo.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ?? JWT Config
+
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 
 builder.Services.AddAuthentication("Bearer")
@@ -32,7 +34,6 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization();
 
-// ?? CORS (Angular)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
@@ -82,10 +83,11 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+builder.AddSerilogLogging();
 
 var app = builder.Build();
 
-
+app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
