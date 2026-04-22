@@ -1,4 +1,6 @@
 ﻿using Demo2.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Dapper;  
 using Demo2.Models;
 using MediatR;
 
@@ -18,7 +20,7 @@ namespace Demo2.Features.Products.Queries.GetAllProducts
             var query = "SELECT Id, Name, Price FROM Products";
 
             using var connection = _context.CreateConnection();
-            return await connection.QueryAsync<Product>(query);
+            return await connection.QueryAsync<Product>(query); 
         }
     }
 }
