@@ -9,10 +9,12 @@ namespace Demo.Services.Implementations
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
-        public AuthService(IUserRepository userRepository , ITokenService tokenService)
+        private readonly IMessagePublisher _publisher;
+        public AuthService(IUserRepository userRepository , ITokenService tokenService, IMessagePublisher publisher)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
+            _publisher = publisher;
         }
 
         public async Task<object> RegisterAsync(RegisterDto dto)
@@ -36,7 +38,13 @@ namespace Demo.Services.Implementations
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
 
-           
+            _publisher.PublishUserRegistered(new
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                Name = user.Username
+            });
+
             return new
             {
                 success = true,

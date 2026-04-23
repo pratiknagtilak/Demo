@@ -52,6 +52,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IMessagePublisher, RabbitMqPublisher>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
